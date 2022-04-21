@@ -6,7 +6,7 @@
 #include <ArduinoJson.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
-
+//needs to be defined by user, ignored by git
 #include <secrets.hpp>
 
 #define DISPLAY_WIDTH 128
