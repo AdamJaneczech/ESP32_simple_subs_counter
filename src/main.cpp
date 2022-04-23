@@ -50,7 +50,7 @@ void setup() {
 
 void loop() {
   http.begin(API_LINK);
-  http.PUT("https://www.googleapis.com/youtube/v3/channels?part=statistics&id=PutYourYoutubeID&key=PutYourYoutubeAPIKey");
+  //http.PUT("https://www.googleapis.com/youtube/v3/channels?part=statistics&id=PutYourYoutubeID&key=PutYourYoutubeAPIKey");
   if(http.GET() > 0){
     display.clearDisplay();
 
