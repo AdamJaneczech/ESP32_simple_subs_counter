@@ -24,6 +24,7 @@ void setup() {
   Serial.begin(115200);
 
   display.begin(SSD1306_SWITCHCAPVCC, DISPLAY_ADDRESS);
+  Wire.setClock(1000000);
   display.clearDisplay();
   display.setTextColor(WHITE);
   display.setTextSize(2);
@@ -36,26 +37,47 @@ void setup() {
   display.setCursor(0, 30);
   
   WiFi.begin(SSID, PASSWORD);
-
+  uint32_t time = millis();
+  byte width;
   while (WiFi.status() != WL_CONNECTED)
   {
-    while(repeats < DISPLAY_WIDTH){
-      delay(10);
-      display.writePixel(repeats, 63, WHITE);
-      display.display();
-      repeats++;
+    while(WiFi.status() != WL_CONNECTED){
+      if(repeats < 32){
+        width = repeats;
+        display.fillRect(0, 61, width, 2, WHITE);
+        display.display();
+        display.fillRect(repeats-1, 61, width, 2, BLACK);
+      }
+      else if(repeats > 128){
+        width = 160-repeats;
+      }
+      if(repeats > 32 && repeats < 160){
+        display.fillRect(0, 61, 128, 2, BLACK);
+        display.fillRect(repeats - 32, 61, width, 2, WHITE);
+        display.display();
+      }
+      time = millis();
+      if(repeats == 160){
+        repeats = 0;
+        width = 0;
+        display.fillRect(0, 61, 128, 2, BLACK);
+        display.display();
+      }
+      else{
+        repeats++;
+      }
     }
+    display.clearDisplay();
   }
 }
 
 void loop() {
   http.begin(API_LINK);
-  //http.PUT("https://www.googleapis.com/youtube/v3/channels?part=statistics&id=PutYourYoutubeID&key=PutYourYoutubeAPIKey");
   if(http.GET() > 0){
     display.clearDisplay();
 
     String payload = http.getString();  // Save all the data on a string
-    StaticJsonDocument<1024> doc;
+    DynamicJsonDocument doc(1024);
 
     DeserializationError error = deserializeJson(doc, payload);
     if (error) {
@@ -63,22 +85,11 @@ void loop() {
       Serial.println(error.c_str());
       return;
     }
-
-    const char* kind = doc["kind"]; // "youtube#channelListResponse"
-    const char* etag = doc["etag"]; // "N2qzbHxVRFVDT0oPjiUA-fzljVY"
-
-    int pageInfo_totalResults = doc["pageInfo"]["totalResults"]; // 1
-    int pageInfo_resultsPerPage = doc["pageInfo"]["resultsPerPage"]; // 5
-
+    
     JsonObject items_0 = doc["items"][0];
-    const char* items_0_kind = items_0["kind"]; // "youtube#channel"
-    const char* items_0_etag = items_0["etag"]; // "iBw7hqWnuqbN96IF1A1grvIh5KE"
-    const char* items_0_id = items_0["id"]; // "UCRtyvKwmfxntAArnskJjeWQ"
-
     JsonObject items_0_statistics = items_0["statistics"];
     const char* items_0_statistics_viewCount = items_0_statistics["viewCount"]; // "316"
     const char* items_0_statistics_subscriberCount = items_0_statistics["subscriberCount"]; // "3"
-    bool items_0_statistics_hiddenSubscriberCount = items_0_statistics["hiddenSubscriberCount"]; // false
     const char* items_0_statistics_videoCount = items_0_statistics["videoCount"]; // "1"
 
     display.setCursor(0,0);
