@@ -3,8 +3,6 @@
 #include <ArduinoJson.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
-//needs to be defined by user, ignored by git
-#include <secrets.hpp>
 
 WiFiClient client;
 HTTPClient http;
@@ -12,25 +10,17 @@ RalewayDisplay screen;
 
 uint8_t repeats = 0;
 
+
 void setup() {
   Serial.begin(115200);
-
-  screen.display->begin(SSD1306_SWITCHCAPVCC, DISPLAY_ADDRESS);
   Wire.setClock(1000000);
-  screen.display->clearDisplay();
-  screen.display->setTextColor(WHITE);
-  screen.display->setTextSize(1);
-  screen.display->print("Connecting");
-  screen.display->setCursor(0,24);
-  screen.display->setTextSize(1);
-  screen.display->print("SSID:");
-  screen.display->print(SSID);
-  screen.display->display();
-  screen.display->setCursor(0, 34);
+
+  screen.init();
   
   WiFi.begin(SSID, PASSWORD);
   uint32_t time = millis();
   byte width;
+  
   while (WiFi.status() != WL_CONNECTED)
   {
     while(WiFi.status() != WL_CONNECTED){
@@ -84,12 +74,17 @@ void loop() {
     const char* items_0_statistics_subscriberCount = items_0_statistics["subscriberCount"]; // "3"
     const char* items_0_statistics_videoCount = items_0_statistics["videoCount"]; // "1"
 
-    screen.display->setCursor(0,8);
+    screen.display->drawBitmap(0, 0, fluni, 128, 29, WHITE);
+    screen.setSizePt(12);
+    screen.setPosition(0,46);
     screen.display->setTextColor(WHITE);
     screen.display->print(items_0_statistics_viewCount);
-    screen.display->setCursor(0,48);
+    screen.setSizePt(8);
+    screen.display->print(" views");
+    screen.display->display();
+    /*screen.setLine(2);
     screen.display->setTextColor(WHITE);
-    screen.display->print(items_0_statistics_subscriberCount);
+    screen.display->print(items_0_statistics_subscriberCount);*/
     screen.display->display();
     delay(5000);
   }
