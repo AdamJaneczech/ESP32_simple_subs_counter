@@ -30,8 +30,18 @@ class RalewayDisplay{
 
         void init();
 
+        void clearDisplayArea();
+
         void loadingScreen(char* ssid);
-        void loadingScreen(uint16_t timeout);
+        void loadingScreen(uint16_t timeout);   //the timeout will be used with a timer interrupt later
+
+        void homeScreen();
+
+        void displayViews(const char* views);
+        void displaySubs(const char* subs);
+        void displayVideoCount(const char* videos);
+
+        void animateLeft();
 
         void setSizePt(uint8_t size);
 
