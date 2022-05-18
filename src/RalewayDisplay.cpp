@@ -35,13 +35,18 @@ void RalewayDisplay::init(){
     display->begin(SSD1306_SWITCHCAPVCC, DISPLAY_ADDRESS);
     display->clearDisplay();
     display->setTextColor(WHITE);
+}
+
+void RalewayDisplay::loadingScreen(char* ssid){
     setSizePt(SIZE_SMALL_6pt);
-    display->print("Connecting");
     setPosition(0,0);
-    display->print("SSID:");
-    display->print(SSID);
+    display->print("SSID: ");
+    display->print(ssid);
+}
+
+void RalewayDisplay::loadingScreen(uint16_t timeout){
+    display->drawBitmap(30, 8, wifi_48px, 69, 48, WHITE);
     display->display();
-    setPosition(0,34);
 }
 
 void RalewayDisplay::setPosition(uint8_t x, uint8_t y){

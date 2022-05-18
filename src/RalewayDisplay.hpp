@@ -1,8 +1,4 @@
 #include <icons.hpp>
-/*
-needs to be defined by user, ignored by git
-*/
-#include <secrets.hpp>
 
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_BusIO_Register.h>
@@ -33,6 +29,9 @@ class RalewayDisplay{
         Adafruit_SSD1306* display;
 
         void init();
+
+        void loadingScreen(char* ssid);
+        void loadingScreen(uint16_t timeout);
 
         void setSizePt(uint8_t size);
 

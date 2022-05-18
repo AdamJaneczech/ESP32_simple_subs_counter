@@ -1,4 +1,8 @@
 #include <RalewayDisplay.hpp>
+#include <secrets.hpp>
+/*
+needs to be defined by user, ignored by git
+*/
 
 #include <ArduinoJson.h>
 #include <WiFi.h>
@@ -20,36 +24,10 @@ void setup() {
   WiFi.begin(SSID, PASSWORD);
   uint32_t time = millis();
   byte width;
-  
+  screen.loadingScreen(1);
   while (WiFi.status() != WL_CONNECTED)
   {
-    while(WiFi.status() != WL_CONNECTED){
-      if(repeats < 32){
-        width = repeats;
-        screen.display->fillRect(0, 61, width, 2, WHITE);
-        screen.display->display();
-        screen.display->fillRect(repeats-1, 61, width, 2, BLACK);
-      }
-      else if(repeats > 128){
-        width = 160-repeats;
-      }
-      if(repeats > 32 && repeats < 160){
-        screen.display->fillRect(0, 61, 128, 2, BLACK);
-        screen.display->fillRect(repeats - 32, 61, width, 2, WHITE);
-        screen.display->display();
-      }
-      time = millis();
-      if(repeats == 160){
-        repeats = 0;
-        width = 0;
-        screen.display->fillRect(0, 61, 128, 2, BLACK);
-        screen.display->display();
-      }
-      else{
-        repeats++;
-      }
-    }
-    screen.display->clearDisplay();
+    
   }
 }
 
@@ -57,7 +35,6 @@ void loop() {
   http.begin(API_LINK);
   if(http.GET() > 0){
     screen.display->clearDisplay();
-
     String payload = http.getString();  // Save all the data on a string
     DynamicJsonDocument doc(1024);
 
