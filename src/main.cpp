@@ -34,10 +34,6 @@ void setup() {
 void loop() {
   http.begin(API_LINK);
   if(http.GET() > 0){
-    state++;
-    if(state > 2){
-      state = 0;
-    }
     String payload = http.getString();  // Save all the data on a string
     DynamicJsonDocument doc(1024);
 
@@ -66,6 +62,10 @@ void loop() {
       case 2:
         screen.displayVideoCount(items_0_statistics_videoCount);
         break;
+    }
+    state++;
+    if(state > 2){
+      state = 0;
     }
     delay(5000);
   }

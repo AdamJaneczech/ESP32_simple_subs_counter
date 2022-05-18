@@ -110,3 +110,14 @@ void RalewayDisplay::displayVideoCount(const char* videos){
     display->print(" videos");
     display->display();
 }
+
+void RalewayDisplay::animateLeft(uint8_t stateNum, char* num){
+    switch(stateNum){
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+    }
+}

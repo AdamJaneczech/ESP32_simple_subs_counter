@@ -41,7 +41,7 @@ class RalewayDisplay{
         void displaySubs(const char* subs);
         void displayVideoCount(const char* videos);
 
-        void animateLeft();
+        void animateLeft(uint8_t stateNum, char* num);
 
         void setSizePt(uint8_t size);
 
