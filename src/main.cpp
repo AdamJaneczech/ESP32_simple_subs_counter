@@ -3,29 +3,55 @@
 needs to be defined by user, ignored by git - define your SSID, PASSWORD & the Google API link
 */
 #include <secrets.hpp>
+#include <config.hpp>
 
 #include <ArduinoJson.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <WebServer.h>
+
+IPAddress local(192, 168, 0, 1);
+IPAddress gateway(192, 168, 0, 1);
+IPAddress subnet(255,255,255,0);
+
+WebServer server(80);
 
 WiFiClient client;
 HTTPClient http;
 RalewayDisplay screen;
 
+hw_timer_t * timer = NULL;
+portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
+
 uint8_t state = 0;
+uint8_t global = 0;
+
+void IRAM_ATTR connectionISR(){
+  global ^= 1 << CONNECTION_TIMEOUT_BIT;
+  Serial.println("interrupt");
+}
 
 void setup() {
   Serial.begin(115200);
   Wire.setClock(1000000);
+
+  timer = timerBegin(0, 80, true);
+  timerAttachInterrupt(timer, &connectionISR, true);
+  timerAlarmWrite(timer, 1e6 * CONNECTION_TIMEOUT_S, true);
+  timerAlarmEnable(timer);
 
   screen.init();
   
   WiFi.begin(SSID, PASSWORD);
 
   screen.loadingScreen(1);
-  while (WiFi.status() != WL_CONNECTED)
+  while (WiFi.status() != WL_CONNECTED && !(global & 1 << CONNECTION_TIMEOUT_BIT))
   {
     ;
+  }
+  if(!(global & 1 << CONNECTION_TIMEOUT_BIT)){
+    Serial.println("timeout");
+    screen.showServerQR();
   }
   screen.display->clearDisplay();
   screen.homeScreen();

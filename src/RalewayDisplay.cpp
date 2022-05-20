@@ -121,3 +121,7 @@ void RalewayDisplay::animateLeft(uint8_t stateNum, char* num){
             break;
     }
 }
+
+void RalewayDisplay::showServerQR(){
+    
+}
