@@ -1,10 +1,18 @@
-#include <config.hpp>
+#include <NetworkManager.hpp>
 /*
 needs to be defined by user, ignored by git - define your SSID, PASSWORD & the Google API link
 */
 #include <secrets.hpp>
 
-void IRAM_ATTR connectionISR(){
+NetworkManager networkManager;
+
+hw_timer_t * timer = NULL;
+portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
+
+uint8_t state = 0;
+uint8_t global = 0;
+
+static void IRAM_ATTR connectionISR(){
   global ^= 1 << CONNECTION_TIMEOUT_BIT;
   Serial.println("interrupt");
 }
@@ -21,7 +29,8 @@ void setup() {
   screen.init();
 
   screen.loadingScreen(1);
-  while (WiFi.status() != WL_CONNECTED && !(global & 1 << CONNECTION_TIMEOUT_BIT))
+  networkManager.beginWiFi(SSID, PASSWORD, 10);
+  while (!(global & 1 << CONNECTION_TIMEOUT_BIT))
   {
     ;
   }

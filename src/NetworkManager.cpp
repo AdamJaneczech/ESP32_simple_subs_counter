@@ -1,6 +1,6 @@
 #include <NetworkManager.hpp>
 
-void NetworkManager::beginWiFi(char* ssid, char* password, uint8_t timeout_s){
+void NetworkManager::beginWiFi(const char* ssid, const char* password, uint8_t timeout_s){
     WiFi.begin(ssid, password);
     screen.loadingScreen(uint16_t(0));
 }
@@ -16,4 +16,12 @@ void NetworkManager::beginServer(char* ssid, char* password){
 
     server.on("/", sendConfigPage);
     server.begin();
+}
+
+uint8_t NetworkManager::wifiStatus(){
+    bool status = false;
+    if(WiFi.status() == WL_CONNECTED){
+        status = true;
+    }
+    return status;
 }
