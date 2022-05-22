@@ -1,14 +1,11 @@
+#include <Arduino.h>
+
 #include <icons.hpp>
 
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_BusIO_Register.h>
 
-#include <Raleway_SemiBold6pt7b.hpp>
-#include <Raleway_SemiBold8pt7b.hpp>
-#include <Raleway_SemiBold10pt7b.hpp>
-#include <Raleway_SemiBold12pt7b.hpp>
-#include <Raleway_SemiBold18pt7b.hpp>
-#include <Raleway_SemiBold21pt7b.hpp>
+#include <RalewayFonts.hpp>
 
 #define SIZE_SMALL_6pt 6
 #define SIZE_SMALL_8pt 8
