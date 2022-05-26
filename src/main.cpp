@@ -6,39 +6,42 @@ needs to be defined by user, ignored by git - define your SSID, PASSWORD & the G
 
 NetworkManager networkManager;
 
-hw_timer_t * timer = NULL;
-portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
-
 uint8_t state = 0;
-uint8_t global = 0;
-
-static void IRAM_ATTR connectionISR(){
-  global ^= 1 << CONNECTION_TIMEOUT_BIT;
-  //Serial.println("interrupt");
-}
 
 void setup() {
   Serial.begin(115200);
   //Wire.setClock(1000000);
-  screen.init();
+  networkTimerInit();
+  setNetworkTimer_s(DEFAULT_NETWORK_TIMEOUT);
 
-  screen.loadingScreen(1);
+  screen.init();
+  screen.loadingScreen();
+
   networkManager.beginWiFi(SSID, PASSWORD, 10);
 
-  timer = timerBegin(0, 80, true);
-  timerAttachInterrupt(timer, &connectionISR, true);
-  timerAlarmWrite(timer, 1e6 * 10, true);
-  timerAlarmEnable(timer);
-  while (!(global & 1 << CONNECTION_TIMEOUT_BIT))
+  while (!(global & 1 << CONNECTION_TIMEOUT_BIT) && WiFi.status() != WL_CONNECTED)
   {
     ;
   }
+  //contrast test
+  /*for(uint8_t contrast = 0; contrast < 255; contrast++){
+    Wire.beginTransmission(DISPLAY_ADDRESS);
+    Wire.write(0x00);
+    Wire.write(SSD1306_SETCONTRAST);
+    Wire.endTransmission();
+    Wire.beginTransmission(DISPLAY_ADDRESS);
+    Wire.write(0x00);
+    Wire.write(contrast);
+    Wire.endTransmission();
+    delay(10);
+  }*/
   if(!(global & 1 << CONNECTION_TIMEOUT_BIT)){
     Serial.println("timeout");
     //screen.showServerQR();
   }
-  /*screen.display->clearDisplay();
-  screen.homeScreen();*/
+  Serial.println("there");
+  screen.display->clearDisplay();
+  screen.homeScreen();
 }
 
 void loop() {

@@ -1,8 +1,12 @@
 #include <NetworkManager.hpp>
 
-void NetworkManager::beginWiFi(const char* ssid, const char* password, const uint8_t timeout_s){
+NetworkManager::NetworkManager(){
+    
+}
+
+void NetworkManager::beginWiFi(const char* ssid, const char* password, uint8_t timeout_s){
     WiFi.begin(ssid, password);
-    screen.loadingScreen(uint16_t(0));
+    networkTimeout = timeout_s;
 }
 
 void NetworkManager::sendConfigPage(){

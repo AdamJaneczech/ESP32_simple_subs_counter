@@ -44,7 +44,7 @@ void RalewayDisplay::loadingScreen(char* ssid){
     display->print(ssid);
 }
 
-void RalewayDisplay::loadingScreen(uint16_t timeout){
+void RalewayDisplay::loadingScreen(){
     display->drawBitmap(30, 8, wifi_48px, 69, 48, WHITE);
     display->display();
 }

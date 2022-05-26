@@ -1,4 +1,4 @@
-#include <Arduino.h>
+#include <ISR.h>
 
 #include <icons.hpp>
 
@@ -30,7 +30,7 @@ class RalewayDisplay{
         void clearDisplayArea();
 
         void loadingScreen(char* ssid);
-        void loadingScreen(uint16_t timeout);   //the timeout will be used with a timer interrupt later
+        void loadingScreen();
 
         void homeScreen();
 
