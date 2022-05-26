@@ -14,32 +14,31 @@ uint8_t global = 0;
 
 static void IRAM_ATTR connectionISR(){
   global ^= 1 << CONNECTION_TIMEOUT_BIT;
-  Serial.println("interrupt");
+  //Serial.println("interrupt");
 }
 
 void setup() {
   Serial.begin(115200);
-  Wire.setClock(1000000);
-
-  timer = timerBegin(0, 80, true);
-  timerAttachInterrupt(timer, &connectionISR, true);
-  timerAlarmWrite(timer, 1e6 * CONNECTION_TIMEOUT_S, true);
-  timerAlarmEnable(timer);
-
+  //Wire.setClock(1000000);
   screen.init();
 
   screen.loadingScreen(1);
   networkManager.beginWiFi(SSID, PASSWORD, 10);
+
+  timer = timerBegin(0, 80, true);
+  timerAttachInterrupt(timer, &connectionISR, true);
+  timerAlarmWrite(timer, 1e6 * 10, true);
+  timerAlarmEnable(timer);
   while (!(global & 1 << CONNECTION_TIMEOUT_BIT))
   {
     ;
   }
   if(!(global & 1 << CONNECTION_TIMEOUT_BIT)){
     Serial.println("timeout");
-    screen.showServerQR();
+    //screen.showServerQR();
   }
-  screen.display->clearDisplay();
-  screen.homeScreen();
+  /*screen.display->clearDisplay();
+  screen.homeScreen();*/
 }
 
 void loop() {

@@ -5,8 +5,7 @@
 #include <HTTPClient.h>
 #include <WebServer.h>
 
-#define CONNECTION_TIMEOUT_BIT 0
-#define CONNECTION_TIMEOUT_S 10 
+#define CONNECTION_TIMEOUT_BIT 0 
 
 static IPAddress local(192, 168, 0, 1);
 static IPAddress gateway(192, 168, 0, 1);
@@ -23,7 +22,7 @@ static RalewayDisplay screen;
 
 class NetworkManager{
     public:
-        static void beginWiFi(const char* ssid, const char* password, uint8_t timeout_s);
+        static void beginWiFi(const char* ssid, const char* password, const uint8_t timeout_s);
         static uint8_t wifiStatus();
         static void beginServer(char* ssid, char* password);
         static void sendConfigPage();
