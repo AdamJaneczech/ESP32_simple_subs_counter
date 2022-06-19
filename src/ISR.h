@@ -1,5 +1,5 @@
 #define CONNECTION_TIMEOUT_BIT 0
-#define DEFAULT_NETWORK_TIMEOUT 10
+#define DEFAULT_NETWORK_TIMEOUT 5
 
 #include <Arduino.h>
 

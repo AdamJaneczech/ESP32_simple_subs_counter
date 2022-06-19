@@ -123,5 +123,15 @@ void RalewayDisplay::animateLeft(uint8_t stateNum, char* num){
 }
 
 void RalewayDisplay::showServerQR(){
-    
+    display->clearDisplay();
+    Wire.beginTransmission(DISPLAY_ADDRESS);
+    Wire.write(0x00);
+    Wire.write(SSD1306_SETCONTRAST);
+    Wire.endTransmission();
+    Wire.beginTransmission(DISPLAY_ADDRESS);
+    Wire.write(0x00);
+    Wire.write(1);
+    Wire.endTransmission();
+    display->drawBitmap(0, 0, WiFiQR, 64, 64, WHITE);
+    display->display();
 }

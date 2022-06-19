@@ -27,6 +27,7 @@ void setup() {
   }
 
   if((global & 1 << CONNECTION_TIMEOUT_BIT)){
+    screen.showServerQR();
     Serial.println("timeout");
     networkManager.beginServer(ESP_SSID, ESP_PASSWORD);
     WiFiClient client = server.available();
