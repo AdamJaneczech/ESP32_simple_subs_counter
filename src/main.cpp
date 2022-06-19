@@ -10,7 +10,9 @@ uint8_t state = 0;
 
 void setup() {
   Serial.begin(115200);
-  //Wire.setClock(1000000);
+  Serial.println("begin");
+  Wire.setClock(1e6);
+
   networkTimerInit();
   setNetworkTimer_s(DEFAULT_NETWORK_TIMEOUT);
 
@@ -23,22 +25,20 @@ void setup() {
   {
     ;
   }
-  //contrast test
-  /*for(uint8_t contrast = 0; contrast < 255; contrast++){
-    Wire.beginTransmission(DISPLAY_ADDRESS);
-    Wire.write(0x00);
-    Wire.write(SSD1306_SETCONTRAST);
-    Wire.endTransmission();
-    Wire.beginTransmission(DISPLAY_ADDRESS);
-    Wire.write(0x00);
-    Wire.write(contrast);
-    Wire.endTransmission();
-    delay(10);
-  }*/
-  if(!(global & 1 << CONNECTION_TIMEOUT_BIT)){
+
+  if((global & 1 << CONNECTION_TIMEOUT_BIT)){
     Serial.println("timeout");
+    networkManager.beginServer(ESP_SSID, ESP_PASSWORD);
+    WiFiClient client = server.available();
+    while(!client){
+      client = server.available();
+    }
+    if(client){
+      Serial.println("client");
+    }
     //screen.showServerQR();
   }
+
   Serial.println("there");
   screen.display->clearDisplay();
   screen.homeScreen();

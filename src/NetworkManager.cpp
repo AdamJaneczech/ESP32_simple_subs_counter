@@ -10,15 +10,14 @@ void NetworkManager::beginWiFi(const char* ssid, const char* password, uint8_t t
 }
 
 void NetworkManager::sendConfigPage(){
-    server.send(100, "text/html", ConfigPage);
+    
 }
 
-void NetworkManager::beginServer(char* ssid, char* password){
+void NetworkManager::beginServer(const char* ssid, const char* password){
     WiFi.disconnect();
-    WiFi.softAP(ssid, password);
     WiFi.softAPConfig(local, gateway, subnet);
-
-    server.on("/", sendConfigPage);
+    WiFi.softAP(ssid, password);
+    Serial.println(WiFi.softAPIP());
     server.begin();
 }
 

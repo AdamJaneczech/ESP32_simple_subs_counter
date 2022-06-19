@@ -15,6 +15,7 @@ static void IRAM_ATTR connectionISR(){
 }
 
 static void networkTimerInit(){
+    //set the prescaler to 80 - the chip frequency is 80 MHz
     timer = timerBegin(0, 80, true);
     timerAttachInterrupt(timer, &connectionISR, true);
 }
