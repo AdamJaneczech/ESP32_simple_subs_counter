@@ -55,7 +55,7 @@ void RalewayDisplay::homeScreen(){
 }
 
 void RalewayDisplay::setPosition(uint8_t x, uint8_t y){
-    display->setCursor(x, y + (uint8_t)sizePt + 1);
+    display->setCursor(x, y + (uint8_t)sizePt + 2);
 }
 
 void RalewayDisplay::clearDisplayArea(){
@@ -133,5 +133,19 @@ void RalewayDisplay::showServerQR(){
     Wire.write(1);
     Wire.endTransmission();
     display->drawBitmap(0, 0, WiFiQR, 64, 64, WHITE);
+    display->display();
+}
+
+void RalewayDisplay::showServerCredentials(const char* esp_ssid, const char* esp_password){
+    setSizePt(SIZE_SMALL_8pt);
+    setPosition(66, 0);
+    display->print("SSID");
+    setPosition(66, 32);
+    display->print("PASS");
+    setSizePt(SIZE_SMALL_6pt);
+    setPosition(66, 12);
+    display->print(esp_ssid);
+    setPosition(66, 44);
+    display->print(esp_password);
     display->display();
 }

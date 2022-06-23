@@ -18,6 +18,7 @@ void NetworkManager::beginServer(const char* ssid, const char* password){
     WiFi.softAPConfig(local, gateway, subnet);
     WiFi.softAP(ssid, password);
     Serial.println(WiFi.softAPIP());
+    //Serial.println(WiFi.localIP());
     server.begin();
 }
 

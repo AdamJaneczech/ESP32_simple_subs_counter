@@ -28,16 +28,17 @@ void setup() {
 
   if((global & 1 << CONNECTION_TIMEOUT_BIT)){
     screen.showServerQR();
-    Serial.println("timeout");
     networkManager.beginServer(ESP_SSID, ESP_PASSWORD);
-    WiFiClient client = server.available();
-    while(!client){
-      client = server.available();
+    screen.showServerCredentials(ESP_SSID, ESP_PASSWORD);
+    while(true){
+      WiFiClient client = server.available();
+      if(client){
+        //Serial.println("client");
+        String request = client.readStringUntil('\r');
+        client.print(ConfigPage);
+        request = "";
+      }
     }
-    if(client){
-      Serial.println("client");
-    }
-    //screen.showServerQR();
   }
 
   Serial.println("there");

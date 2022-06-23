@@ -46,6 +46,8 @@ class RalewayDisplay{
 
         void showServerQR();
 
+        void showServerCredentials(const char* esp_ssid, const char* esp_password);
+
     private:
         uint8_t sizePt;
 };
