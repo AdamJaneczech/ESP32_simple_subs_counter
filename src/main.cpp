@@ -30,9 +30,10 @@ void setup() {
     networkManager.beginServer(ESP_SSID, ESP_PASSWORD);
     screen.showServerQR();
     screen.showServerCredentials(ESP_SSID, ESP_PASSWORD);
-    while(true){
+    while(global & 1 << CONNECTION_TIMEOUT_BIT){
       WiFiClient client = server.available();
       if(client){
+        global &= ~(1 << CONNECTION_TIMEOUT_BIT);
         Serial.println("New client");
         while(client.connected()){
           if(client.available()){
@@ -43,9 +44,11 @@ void setup() {
           client.print(ConfigPage);
           request = "";
         }
+        client.stop();
       }
     }
   }
+  
   timerDetachInterrupt(timer);
 
   scrollTimerInit();
@@ -60,7 +63,6 @@ void loop() {
   if(http.GET() > 0 && global & 1 << SCROLL_TIMEOUT_BIT){
     
     global &= ~(1 << SCROLL_TIMEOUT_BIT);
-    Serial.println(global & 1 << SCROLL_TIMEOUT_BIT);
     
     String payload = http.getString();  // Save all the data on a string
     DynamicJsonDocument doc(1024);
