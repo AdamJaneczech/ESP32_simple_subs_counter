@@ -70,7 +70,7 @@ void RalewayDisplay::displayViews(const char* views){
         setPosition(0, 46);
     }
     else if(strlen(views) > 6){
-        setSizePt(SIZE_LARGE_12pt);
+        setSizePt(SIZE_MID_10pt);
         setPosition(0, 48);
     }
     display->print(views);
