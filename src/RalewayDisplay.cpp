@@ -111,15 +111,8 @@ void RalewayDisplay::displayVideoCount(const char* videos){
     display->display();
 }
 
-void RalewayDisplay::animateLeft(uint8_t stateNum, char* num){
-    switch(stateNum){
-        case 0:
-            break;
-        case 1:
-            break;
-        case 2:
-            break;
-    }
+void RalewayDisplay::animateLeft(){
+    
 }
 
 void RalewayDisplay::showServerQR(){
@@ -142,10 +135,10 @@ void RalewayDisplay::showServerCredentials(const char* esp_ssid, const char* esp
     display->print("SSID");
     setPosition(66, 32);
     display->print("PASS");
-    setSizePt(SIZE_SMALL_6pt);
+    /*setSizePt(SIZE_SMALL_6pt);
     setPosition(66, 12);
     display->print(esp_ssid);
     setPosition(66, 44);
-    display->print(esp_password);
+    display->print(esp_password);*/
     display->display();
 }

@@ -19,6 +19,9 @@
 #define DISPLAY_RESET -1
 #define DISPLAY_ADDRESS 0x3C
 
+#define EASE B1
+
+
 class RalewayDisplay{
     public:
         RalewayDisplay();
@@ -38,7 +41,7 @@ class RalewayDisplay{
         void displaySubs(const char* subs);
         void displayVideoCount(const char* videos);
 
-        void animateLeft(uint8_t stateNum, char* num);
+        void animateLeft();
 
         void setSizePt(uint8_t size);
 

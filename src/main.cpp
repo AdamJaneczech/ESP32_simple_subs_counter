@@ -26,29 +26,42 @@ void setup() {
     ;
   }
 
-  if((global & 1 << CONNECTION_TIMEOUT_BIT)){
-    screen.showServerQR();
+  if(global & 1 << CONNECTION_TIMEOUT_BIT){
     networkManager.beginServer(ESP_SSID, ESP_PASSWORD);
+    screen.showServerQR();
     screen.showServerCredentials(ESP_SSID, ESP_PASSWORD);
     while(true){
       WiFiClient client = server.available();
       if(client){
-        //Serial.println("client");
-        String request = client.readStringUntil('\r');
-        client.print(ConfigPage);
-        request = "";
+        Serial.println("New client");
+        while(client.connected()){
+          if(client.available()){
+            
+          }
+          Serial.println("client connected");
+          String request = client.readStringUntil('\r');
+          client.print(ConfigPage);
+          request = "";
+        }
       }
     }
   }
+  timerDetachInterrupt(timer);
 
-  Serial.println("there");
+  scrollTimerInit();
+  setScrollTimer_s(DEFAULT_SCROLL_TIMEOUT);
+
   screen.display->clearDisplay();
   screen.homeScreen();
 }
 
 void loop() {
   http.begin(API_LINK);
-  if(http.GET() > 0){
+  if(http.GET() > 0 && global & 1 << SCROLL_TIMEOUT_BIT){
+    
+    global &= ~(1 << SCROLL_TIMEOUT_BIT);
+    Serial.println(global & 1 << SCROLL_TIMEOUT_BIT);
+    
     String payload = http.getString();  // Save all the data on a string
     DynamicJsonDocument doc(1024);
 
@@ -82,7 +95,6 @@ void loop() {
     if(state > 2){
       state = 0;
     }
-    delay(5000);
   }
   http.end();
 }
