@@ -12,10 +12,11 @@ static IPAddress subnet(255,255,255,0);
 
 static WiFiServer server(80);
 
-//static WiFiClient client;
 static HTTPClient http;
 
 static RalewayDisplay screen;
+
+static String header;
 
 #include <ConfigPage.hpp>
 

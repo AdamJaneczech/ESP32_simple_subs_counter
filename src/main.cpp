@@ -29,22 +29,28 @@ void setup() {
   if(global & 1 << CONNECTION_TIMEOUT_BIT){
     networkManager.initAP(ESP_SSID, ESP_PASSWORD);
     server.begin();
-    
+
     screen.showServerQR();
     screen.showServerCredentials(ESP_SSID, ESP_PASSWORD);
-    while(global & 1 << CONNECTION_TIMEOUT_BIT){
+    
+    while(!(global & 1 << SERVER_SUBMIT_BIT)){
       WiFiClient client = server.available();
+      
       if(client){
-        global &= ~(1 << CONNECTION_TIMEOUT_BIT);
         Serial.println("New client");
-        while(client.connected()){
+        global &= ~(1 << CONNECTION_TIMEOUT_BIT);
+
+        while(client.connected() && !(global & 1 << CONNECTION_TIMEOUT_BIT)){
           if(client.available()){
+            char c = client.read();
+            Serial.write(char(c));
+            header += c;
+            Serial.println(header);
             
+            String request = client.readStringUntil('\r');
+            client.print(ConfigPage);
+            request = "";
           }
-          Serial.println("client connected");
-          String request = client.readStringUntil('\r');
-          client.print(ConfigPage);
-          request = "";
         }
         client.stop();
       }

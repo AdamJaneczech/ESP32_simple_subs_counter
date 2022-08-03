@@ -1,5 +1,7 @@
 #define CONNECTION_TIMEOUT_BIT 0
 #define SCROLL_TIMEOUT_BIT 1
+#define SERVER_SUBMIT_BIT 2
+
 #define DEFAULT_NETWORK_TIMEOUT 10
 #define DEFAULT_SCROLL_TIMEOUT 5
 
@@ -13,7 +15,6 @@ static uint8_t networkTimeout;
 
 static void IRAM_ATTR connectionISR(){
   global |= 1 << CONNECTION_TIMEOUT_BIT;
-  Serial.println(global, BIN);
 }
 
 static void IRAM_ATTR scrollISR(){
