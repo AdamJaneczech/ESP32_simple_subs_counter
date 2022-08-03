@@ -24,7 +24,7 @@ class NetworkManager{
         NetworkManager();
         static void beginWiFi(const char* ssid, const char* password, uint8_t timeout_s);
         static uint8_t wifiStatus();
-        static void beginServer(const char* ssid, const char* password);
+        static void initAP(const char* ssid, const char* password);
         static void sendConfigPage();
     private:
 };

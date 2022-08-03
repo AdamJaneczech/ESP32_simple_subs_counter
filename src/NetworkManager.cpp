@@ -14,14 +14,9 @@ void NetworkManager::sendConfigPage(){
     
 }
 
-void NetworkManager::beginServer(const char* ssid, const char* password){
-    //WiFi.softAPConfig(local, gateway, subnet);
-    //WiFi.disconnect(true);
-    WiFi.mode(WIFI_MODE_APSTA);
+void NetworkManager::initAP(const char* ssid, const char* password){
     WiFi.softAP(ssid, password);
     Serial.println(WiFi.softAPIP());
-    //Serial.println(WiFi.localIP());
-    server.begin();
 }
 
 uint8_t NetworkManager::wifiStatus(){

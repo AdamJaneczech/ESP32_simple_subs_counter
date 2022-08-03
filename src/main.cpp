@@ -27,7 +27,9 @@ void setup() {
   }
 
   if(global & 1 << CONNECTION_TIMEOUT_BIT){
-    networkManager.beginServer(ESP_SSID, ESP_PASSWORD);
+    networkManager.initAP(ESP_SSID, ESP_PASSWORD);
+    server.begin();
+    
     screen.showServerQR();
     screen.showServerCredentials(ESP_SSID, ESP_PASSWORD);
     while(global & 1 << CONNECTION_TIMEOUT_BIT){
