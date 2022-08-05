@@ -1,4 +1,4 @@
-#define CONNECTION_TIMEOUT_BIT 0
+#define NO_CONNECTION_BIT 0
 #define SCROLL_TIMEOUT_BIT 1
 #define SERVER_SUBMIT_BIT 2
 
@@ -14,7 +14,7 @@ static uint8_t global = 0;
 static uint8_t networkTimeout;
 
 static void IRAM_ATTR connectionISR(){
-  global |= 1 << CONNECTION_TIMEOUT_BIT;
+  global |= 1 << NO_CONNECTION_BIT;
 }
 
 static void IRAM_ATTR scrollISR(){

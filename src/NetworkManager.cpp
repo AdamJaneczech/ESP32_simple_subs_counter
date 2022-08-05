@@ -4,10 +4,14 @@ NetworkManager::NetworkManager(){
     
 }
 
-void NetworkManager::beginWiFi(const char* ssid, const char* password, uint8_t timeout_s){
-    //WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, password);
-    networkTimeout = timeout_s;
+bool NetworkManager::beginWiFi(const char* ssid, const char* password){  
+    if(strlen(ssid) == 0 || strlen(password) < 8){
+        return false;
+    }
+    else{
+        WiFi.begin(ssid, password);
+        return true;
+    }
 }
 
 void NetworkManager::sendConfigPage(){

@@ -1,7 +1,5 @@
 #include <RalewayDisplay.hpp>
 
-
-//#include <WiFi.h>
 #include <ArduinoJson.h>
 #include <HTTPClient.h>
 #include <WebServer.h>
@@ -18,12 +16,18 @@ static RalewayDisplay screen;
 
 static String header;
 
+static const char* input_1 = "ssid";
+static const char* input_2 = "password";
+
+static const char* SSID_path = "/ssid.cfg";
+static const char* password_path = "/password.cfg";
+
 #include <Config.hpp>
 
 class NetworkManager{
     public:
         NetworkManager();
-        static void beginWiFi(const char* ssid, const char* password, uint8_t timeout_s);
+        static bool beginWiFi(const char* ssid, const char* password);
         static uint8_t wifiStatus();
         static void initAP(const char* ssid, const char* password);
         static void sendConfigPage();

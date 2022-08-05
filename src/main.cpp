@@ -1,4 +1,4 @@
-#include <NetworkManager.hpp>
+#include <FLUNI_ticker.hpp>
 /*
 needs to be defined by user, ignored by git - define your SSID, PASSWORD & the Google API link
 */
@@ -10,23 +10,22 @@ uint8_t state = 0;
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("begin");
-  Wire.setClock(1e6);
 
   networkTimerInit();
   setNetworkTimer_s(DEFAULT_NETWORK_TIMEOUT);
 
   screen.init();
   screen.loadingScreen();
+  if(networkManager.beginWiFi(SSID, PASSWORD)){
+    while(!(global & 1 << NO_CONNECTION_BIT) && WiFi.status() != WL_CONNECTED){
 
-  networkManager.beginWiFi(SSID, PASSWORD, 10);
-
-  while (!(global & 1 << CONNECTION_TIMEOUT_BIT) && WiFi.status() != WL_CONNECTED)
-  {
-    ;
+    }
+  }
+  else{
+    global |= 1 << NO_CONNECTION_BIT;
   }
 
-  if(global & 1 << CONNECTION_TIMEOUT_BIT){
+  if(global & 1 << NO_CONNECTION_BIT){
     networkManager.initAP(ESP_SSID, ESP_PASSWORD);
 
     screen.showServerQR();
@@ -40,7 +39,7 @@ void setup() {
       if(client){
         Serial.println("New client");
         String currentLine = "";
-        global &= ~(1 << CONNECTION_TIMEOUT_BIT);
+        global &= ~(1 << NO_CONNECTION_BIT);
 
         while(client.connected()){
           if(client.available()){
