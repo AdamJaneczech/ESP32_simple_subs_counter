@@ -38,21 +38,39 @@ void setup() {
       
       if(client){
         Serial.println("New client");
+        String currentLine = "";
         global &= ~(1 << CONNECTION_TIMEOUT_BIT);
 
-        while(client.connected() && !(global & 1 << CONNECTION_TIMEOUT_BIT)){
+        while(client.connected()){
           if(client.available()){
             char c = client.read();
             Serial.write(char(c));
             header += c;
-            Serial.println(header);
+            //Serial.println(header);
             
-            String request = client.readStringUntil('\r');
-            client.print(ConfigPage);
-            request = "";
+            if(c == '\n'){
+              if(currentLine.length() == 0){
+                client.println("HTTP/1.1 200 OK");
+                client.println("Content-type:text/html");
+                client.println("Connection: close");
+                client.println();
+                client.print(ConfigPage);
+                client.println();
+                break;
+              }
+              else{
+                currentLine = "";
+              }
+            }
+
+            else if (c != '\r') {  // if you got anything else but a carriage return character,
+              currentLine += c;      // add it to the end of the currentLine
+            }
           }
         }
         client.stop();
+        header = "";
+        Serial.println("Client disconnected");
       }
     }
   }
