@@ -32,8 +32,12 @@ void setup() {
     screen.showServerCredentials(ESP_SSID, ESP_PASSWORD);
 
     server.begin();
+
+    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+      request->send_P(200, "text/html", ConfigPage, (const char*)' ');
+    });
     
-    while(!(global & 1 << SERVER_SUBMIT_BIT)){
+    /* while(!(global & 1 << SERVER_SUBMIT_BIT)){
       WiFiClient client = server.available();
       
       if(client){
@@ -72,7 +76,7 @@ void setup() {
         header = "";
         Serial.println("Client disconnected");
       }
-    }
+    } */
   }
   
   timerDetachInterrupt(timer);

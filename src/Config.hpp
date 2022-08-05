@@ -1,8 +1,8 @@
-static String response = "HTTP/1.1 200 OK   \
+static char* response = "HTTP/1.1 200 OK   \
 Content-type:text/html  \
 Connection: close";
 
-static char* PROGMEM ConfigPage = 
+static const char* PROGMEM ConfigPage = 
 
 "<!DOCTYPE html> \
 <html lang=\"en\">  \
