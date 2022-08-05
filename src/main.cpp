@@ -28,10 +28,11 @@ void setup() {
 
   if(global & 1 << CONNECTION_TIMEOUT_BIT){
     networkManager.initAP(ESP_SSID, ESP_PASSWORD);
-    server.begin();
 
     screen.showServerQR();
     screen.showServerCredentials(ESP_SSID, ESP_PASSWORD);
+
+    server.begin();
     
     while(!(global & 1 << SERVER_SUBMIT_BIT)){
       WiFiClient client = server.available();
@@ -46,10 +47,10 @@ void setup() {
             char c = client.read();
             Serial.write(char(c));
             header += c;
-            //Serial.println(header);
             
             if(c == '\n'){
               if(currentLine.length() == 0){
+                Serial.println(header);
                 client.println("HTTP/1.1 200 OK");
                 client.println("Content-type:text/html");
                 client.println("Connection: close");

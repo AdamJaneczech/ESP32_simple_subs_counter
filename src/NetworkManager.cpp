@@ -15,15 +15,8 @@ void NetworkManager::sendConfigPage(){
 }
 
 void NetworkManager::initAP(const char* ssid, const char* password){
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, password);
-    if (WiFi.waitForConnectResult() != WL_CONNECTED) {
-        Serial.println("Connecting...");
-        return;
-    }
-    Serial.println();
-    Serial.print("IP Address: ");
-    Serial.println(WiFi.localIP());
+    WiFi.softAP(ssid, password);
+    Serial.println(WiFi.softAPIP());
 }
 
 uint8_t NetworkManager::wifiStatus(){

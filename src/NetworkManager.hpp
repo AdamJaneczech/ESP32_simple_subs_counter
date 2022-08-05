@@ -4,14 +4,13 @@
 //#include <WiFi.h>
 #include <ArduinoJson.h>
 #include <HTTPClient.h>
-#include <AsyncTCP.h>
-#include <ESPAsyncWebServer.h>
+#include <WebServer.h>
 
-/* static IPAddress local(192, 168, 0, 1);
+static IPAddress local(192, 168, 0, 1);
 static IPAddress gateway(192, 168, 0, 1);
-static IPAddress subnet(255,255,255,0); */
+static IPAddress subnet(255,255,255,0);
 
-static AsyncWebServer server(80);
+static WiFiServer server(80);
 
 static HTTPClient http;
 

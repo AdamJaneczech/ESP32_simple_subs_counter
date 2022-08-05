@@ -2,7 +2,7 @@ static String response = "HTTP/1.1 200 OK   \
 Content-type:text/html  \
 Connection: close";
 
-static String ConfigPage = 
+static char* PROGMEM ConfigPage = 
 
 "<!DOCTYPE html> \
 <html lang=\"en\">  \
@@ -22,5 +22,5 @@ static String ConfigPage =
 </body> \
 </html>";
 
-const char* input_ssid = "ssid";
-const char* input_password = "password";
+static const char* input_ssid = "ssid";
+static const char* input_password = "password";
