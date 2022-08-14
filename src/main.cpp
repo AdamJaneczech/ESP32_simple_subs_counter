@@ -16,6 +16,19 @@ void setup() {
 
   screen.init();
   screen.loadingScreen();
+
+  if (!SPIFFS.begin(true)) {
+    Serial.println("An error has occurred while mounting SPIFFS");
+  }
+  Serial.println("SPIFFS mounted successfully");
+
+  //writeFile(SPIFFS, SSID_path, "ssid");
+  SSID = readFile(SPIFFS, SSID_path);
+  //PASSWORD = readFile(SPIFFS, password_path);
+
+  Serial.println(SSID);
+  Serial.println(PASSWORD);
+
   if(networkManager.beginWiFi(SSID, PASSWORD)){
     while(!(global & 1 << NO_CONNECTION_BIT) && WiFi.status() != WL_CONNECTED){
 
@@ -33,9 +46,9 @@ void setup() {
 
     server.begin();
 
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-      request->send_P(200, "text/html", ConfigPage, (const char*)' ');
-    });
+    // server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+    //   request->send_P(200, "text/html", ConfigPage, (const char*)' ');
+    // });
     
     /* while(!(global & 1 << SERVER_SUBMIT_BIT)){
       WiFiClient client = server.available();

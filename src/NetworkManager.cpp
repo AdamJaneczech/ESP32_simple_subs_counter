@@ -9,6 +9,7 @@ bool NetworkManager::beginWiFi(const char* ssid, const char* password){
         return false;
     }
     else{
+        
         WiFi.begin(ssid, password);
         return true;
     }
