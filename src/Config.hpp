@@ -1,4 +1,4 @@
-static char* response = "HTTP/1.1 200 OK   \
+static const char* response = "HTTP/1.1 200 OK   \
 Content-type:text/html  \
 Connection: close";
 

@@ -21,21 +21,21 @@ void setup() {
     Serial.println("An error has occurred while mounting SPIFFS");
   }
   Serial.println("SPIFFS mounted successfully");
-
-  //writeFile(SPIFFS, SSID_path, "ssid");
+  writeFile(SPIFFS, SSID_path, "abcd");
   SSID = readFile(SPIFFS, SSID_path);
   //PASSWORD = readFile(SPIFFS, password_path);
 
   Serial.println(SSID);
+  Serial.println("below");
+  Serial.println(strlen(SSID));
   Serial.println(PASSWORD);
 
-  if(networkManager.beginWiFi(SSID, PASSWORD)){
-    while(!(global & 1 << NO_CONNECTION_BIT) && WiFi.status() != WL_CONNECTED){
+  networkManager.beginWiFi(SSID, PASSWORD);
 
-    }
-  }
-  else{
-    global |= 1 << NO_CONNECTION_BIT;
+  Serial.println("below");
+
+  while(!(global & 1 << NO_CONNECTION_BIT) && WiFi.status() != WL_CONNECTED){
+
   }
 
   if(global & 1 << NO_CONNECTION_BIT){
