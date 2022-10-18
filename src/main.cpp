@@ -21,8 +21,8 @@ void setup() {
     Serial.println("An error has occurred while mounting SPIFFS");
   }
   Serial.println("SPIFFS mounted successfully");
-  writeFile(SPIFFS, SSID_path, "abcd");
-  SSID = readFile(SPIFFS, SSID_path);
+  writeFile(SPIFFS, SSID_path, (const char*)("abcdefghijklmnopqrstuvxyzzzzzksdjbgfdsfljkbgsdflkjg"));
+  SSID = (const char*)readFile(SPIFFS, SSID_path);
   //PASSWORD = readFile(SPIFFS, password_path);
 
   Serial.println(SSID);

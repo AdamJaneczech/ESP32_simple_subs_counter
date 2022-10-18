@@ -8,14 +8,22 @@ const char* readFile(fs::FS &fs, const char * path){
   if(!file || file.isDirectory()){
     Serial.println("- failed to open file for reading");
   }
-  int msg_len = 0; 
+  char * fileContentBuffer = new char[64];
+  int msg_len = 0;
+  Serial.println("− read from file:");
   while(file.available()){
-    //fileContentChar += file.read();
-    Serial.write(char(file.read()));
+    fileContentBuffer[msg_len] = file.read();
     msg_len++;
   }
-  const char* fileContentChar = new char[msg_len];
-  return fileContentChar;
+  char * fileContent = new char[msg_len];
+  for(uint8_t length = 0; length < msg_len; length++){
+    fileContent[length] = fileContentBuffer[length];
+    //Serial.write(fileContent[length]);
+  }
+  Serial.println(strlen(fileContent));
+  delete fileContentBuffer;
+  return fileContent;
+  delete fileContent;
 }
 
 // Write file to SPIFFS
@@ -29,8 +37,9 @@ void writeFile(fs::FS &fs, const char * path, const char * message){
   }
   if(file.print(message)){
     Serial.println("- file written");
-  } else {
-    Serial.println("- frite failed");
+  } 
+  else {
+    Serial.println("- write failed");
   }
   file.close();
 }
